@@ -74,10 +74,20 @@
             console.log(error);
         }
 
-        function onSuccess(position) {
+        async function onSuccess(position) {
             let latitude = position.coords.latitude;
             let longitude = position.coords.longitude;
-            console.log(latitude, longitude);
+            // open cage data api 
+            const api_key = "ddbe5136e9a74d96b2d4b2ad6bc55e4f";
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${api_key}`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            const country = data.results[0].components.country;
+
+            document.querySelector('#txtSearch').value = country;
+            document.querySelector('#btnSearch').click();
+
         }
 
         async function getCountry(country) {
